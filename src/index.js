@@ -1,12 +1,10 @@
 module.exports = function getZerosCount(number, base) {
   // your implementation
-
-
-  var i = 2; 
-  var k=1;
-  var mas = [];
-  let count =1;
-  let arr =[];
+  let i = 2;
+  let count = 0; 
+  let last, key, fo, max;
+  let mas = [];
+  let result = {};
 
   do
   {
@@ -18,83 +16,40 @@ module.exports = function getZerosCount(number, base) {
       else{i++;}
   }while (i <= base)
 
-
-  var result = {};
   mas.forEach(function(a){
       if (result[a] != undefined)
           ++result[a];
       else
           result[a] = 1;
   });
-    mas=[];
 
+     fo = Object.values(result);
+     max = Math.max(...fo);
 
-var lastKey;
-var key;
+     Object.prototype.getKey = function(value){
+        for(key in result){
+          if(result[key] == value){
+            return key;
+          }
+        }
+        return null;
+      };
 
-    let fo = Object.values(result);
-    let max = Math.max(...fo);
-
-let sum=0;
-
-  for(let i =0; i<fo.length; i++){
- 		sum+=fo[i];
-  }
-
-var sortable = [];
-for (var key in result) {
-    sortable.push([key]);
-	sortable.push([result[key]]);
-}
-
-sortable.sort(function(a, b) {
-    return a[1] - b[1];
-});
-
-//alert( sortable );
-
-
-for(var key in result){
-//alert( "Ключ: " + key + " значение: " + result[key] );
-	    if(result.hasOwnProperty(key)){
-			var last =key;
-      	
+    for (key in result) {
+        if(result.hasOwnProperty(key))
+        last = key; 	
     }
 
-if (sortable[sortable.length-1]<last){
-		key = last;
+    if (fo[0]<last) key = last;
+    else key = result.getKey(max);
 
-//alert("посл" + key);
-}	
-else 
-    {
-Object.prototype.getKey = function(value){
-  for(var key in result){
-    if(result[key] == value){
-      return key;
-    }
-  }
-  return null;
-};
-	key = result.getKey(max);
-    }
-}
-
-max=result[key];
-
- arr.push(result[key]);
-mas.push(key);
-
-//alert("макс" + max);
-//alert(mas);
-//alert(arr);
-
-let ret =0;
+    max = result[key];
 
   while(number){
-  number = (number/mas[0])|0;
-  ret+=number;
+  number = (number/key)|0;
+  count += number;
   }
-  return (ret/max)|0;
+
+  return (count/max)|0;
 }
  
